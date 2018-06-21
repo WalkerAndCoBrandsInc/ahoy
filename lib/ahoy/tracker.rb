@@ -94,6 +94,17 @@ module Ahoy
       @visitor_token ||= existing_visitor_id || (@options[:api] && request.params["visitor_token"]) || generate_id
     end
 
+    def reset
+      reset_visit
+      delete_cookie("ahoy_visitor")
+    end
+
+    def reset_visit
+      delete_cookie("ahoy_visit")
+      delete_cookie("ahoy_events")
+      delete_cookie("ahoy_track")
+    end
+
     protected
 
     def set_cookie(name, value, duration = nil)
@@ -148,17 +159,6 @@ module Ahoy
 
     def delete_cookie(name)
       request.cookie_jar.delete(name) if request.cookie_jar[name]
-    end
-
-    def reset
-      reset_visit
-      delete_cookie("ahoy_visitor")
-    end
-
-    def reset_visit
-      delete_cookie("ahoy_visit")
-      delete_cookie("ahoy_events")
-      delete_cookie("ahoy_track")
     end
   end
 end
