@@ -146,5 +146,19 @@ module Ahoy
       Ahoy.ensure_uuid(id)
     end
 
+    def delete_cookie(name)
+      request.cookie_jar.delete(name) if request.cookie_jar[name]
+    end
+
+    def reset
+      reset_visit
+      delete_cookie("ahoy_visitor")
+    end
+
+    def reset_visit
+      delete_cookie("ahoy_visit")
+      delete_cookie("ahoy_events")
+      delete_cookie("ahoy_track")
+    end
   end
 end
